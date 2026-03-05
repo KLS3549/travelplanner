@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 export default function ItineraryResult({ result }) {
   if (!result) return null;
 
-  /* ========= 只做 JSON parse ========= */
   let data;
 
   try {
@@ -20,68 +19,109 @@ export default function ItineraryResult({ result }) {
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
-      className="w-full max-w-5xl mt-14 px-4"
+      className="flex justify-center mt-14 px-4"
     >
-      {/* 外框 */}
-      <div className="bg-[#F7F5F1] rounded-3xl shadow-xl p-10 border border-[#E8E2D6]">
+      <div className="w-full max-w-3xl">
 
-        {/* 標題 */}
-        <h2 className="text-3xl font-bold text-[#8A8473] mb-8">
-          🗺️ AI 推薦行程
-        </h2>
+        <div className="bg-[#F7F5F1] rounded-3xl shadow-xl p-10 border border-[#E8E2D6]">
 
-        {/* ========= 每天卡片 ========= */}
-        <div className="grid md:grid-cols-2 gap-6">
-          {data.days.map((day) => (
-            <motion.div
-              key={day.day}
-              whileHover={{ y: -4 }}
-              className="
-                bg-white
-                rounded-2xl
-                border-2 border-[#E8E2D6]
-                p-6
-                shadow-sm
-                hover:shadow-md
-                transition
-              "
-            >
-              {/* 天數標題 */}
-              <h3 className="font-bold text-lg text-[#8A8473] mb-3">
-                第 {day.day} 天｜{day.title}
-              </h3>
+          {/* 旅行資訊 */}
+          <div className="text-center mb-10">
 
-              {/* 行程列表 */}
-              <ul className="space-y-2 text-[#3D3929]">
-                {day.activities.map((a, i) => (
-                  <li key={i}>• {a}</li>
-                ))}
-              </ul>
+            <h2 className="text-3xl font-bold text-[#8A8473]">
+              {data.tripTitle}
+            </h2>
 
-              {/* 美食區 */}
-              <div className="mt-4 text-sm text-[#8A8473]">
-                🍜 推薦美食：{day.foods.join("、")}
-              </div>
-            </motion.div>
-          ))}
+            <p className="text-[#8A8473] mt-2 text-md font-normal">
+              {data.destination} ｜ {data.daysCount} ｜ {data.people}
+            </p>
+
+          </div>
+
+          {/* 住宿 */}
+          <div className="bg-white rounded-2xl p-6 ">
+
+            <h3 className="font-semibold text-[#8A8473] mb-3 text-md">
+              🏨 推薦住宿
+            </h3>
+
+            <ul className="space-y-1 text-[#3D3929] text-md font-medium">
+
+              {data.hotels.map((h, i) => (
+                <li key={i}>• {h}</li>
+              ))}
+
+            </ul>
+
+          </div>
+
+          {/* 淺棕灰短分隔線 */}
+          <div className="w-170 h-[1px] bg-stone-300 mx-auto my-9 rounded-full" />  
+
+          {/* 每日行程 */}
+          <div className="flex flex-col gap-6">
+
+            {data.days.map((day) => (
+
+              <motion.div
+                key={day.day}
+                whileHover={{ y: -4 }}
+                className="bg-white rounded-2xl border-2 border-[#E8E2D6] p-6 shadow-sm"
+              >
+
+                <h3 className="font-semibold text-md text-[#8A8473] mb-4">
+                  第 {day.day} 天｜{day.date}
+                </h3>
+
+                <div className="flex flex-col gap-4">
+
+                  {day.spots.map((spot, i) => (
+
+                    <div
+                      key={i}
+                      className="border-l-4 border-[#C9BBA7] pl-4"
+                    >
+
+                      <p className="font-semibold text-[#3D3929] text-lg">
+                        📍 {spot.name}
+                      </p>
+
+                      <div className="text-sm text-stone-400 flex gap-4 mt-1">
+                        <span>⏱ {spot.duration}</span>
+                      </div>
+
+                      <div className="text-sm text-stone-400 flex gap-4 mt-1">
+                        <span>💰 {spot.cost}</span>
+                      </div>
+
+                      {spot.transport && (
+                        <div className="text-sm text-stone-400 mt-1">
+                          🚌 前往下一站：{spot.transport}
+                        </div>
+                      )}
+
+                    </div>
+
+                  ))}
+
+                </div>
+
+                {/* 美食 */}
+                <div className="mt-4 text-md text-[#8A8473] font-medium">
+
+                  🍜 推薦美食：
+                  {day.foods.join("、")}
+
+                </div>
+
+              </motion.div>
+
+            ))}
+
+          </div>
+
         </div>
 
-        {/* 複製按鈕 */}
-        <button
-          onClick={() => navigator.clipboard.writeText(result)}
-          className="
-            mt-10
-            bg-[#B7B1A1]
-            text-white font-semibold
-            px-6 py-3
-            rounded-2xl
-            hover:bg-[#A39D8C]
-            hover:scale-105
-            transition
-          "
-        >
-          📋 複製全部行程
-        </button>
       </div>
     </motion.div>
   );

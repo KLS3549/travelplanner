@@ -1,42 +1,80 @@
 export async function generateItinerary(data) {
-const prompt = `
-你是一位旅遊行程規劃師。
 
-請根據使用者資訊產生「旅遊行程」。
-
-⚠️ 請嚴格使用 JSON 格式輸出，不要加任何說明文字。
-
-格式如下：
-
-{
-  "days": [
+    const start = new Date(data.startDate)
+    const end = new Date(data.endDate)
+    
+    const days =
+      Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1
+    
+    const prompt = `
+    你是一位專業旅遊規劃師。
+    
+    請為旅客規劃完整旅遊行程。
+    
+    ⚠️ 必須輸出純 JSON，不要任何說明文字。
+    
+    JSON 格式：
+    
     {
-      "day": 1,
-      "title": "城市探索",
-      "activities": [
-        "上午：景點A",
-        "下午：景點B",
-        "晚上：夜市美食"
-      ],
-      "foods": ["餐廳A", "小吃B"]
+     "tripTitle":"旅行名稱",
+     "destination":"目的地",
+     "daysCount":"3晚",
+     "people":"2人",
+     "hotels":[
+       "飯店名稱1",
+       "飯店名稱2",
+       "飯店名稱3"
+     ],
+     "days":[
+       {
+         "day":1,
+         "date":"2026-03-10",
+         "title":"城市探索",
+         "spots":[
+           {
+             "name":"景點名稱",
+             "transport":"交通方式(最後一個景點留空)",
+             "duration":"停留時間",
+             "cost":"預估花費(NT$)"
+           }
+         ],
+         "foods":[
+           "真實餐廳名稱",
+           "真實餐廳名稱"
+         ]
+       }
+     ]
     }
-  ]
-}
-
-使用者資訊：
-旅遊類型：${data.type}
-目的地：${data.destination}
-日期：${data.date}
-人數：${data.people}
-交通方式：${data.transport}
-預算：${data.budget}
-`;
-  
+    
+    規則：
+    
+    1. 必須產生 ${days} 天
+    2. hotels 必須是真實飯店或民宿名稱
+    3. foods 必須是真實餐廳
+    4. 景點順路
+    5. 每天最後一個景點 transport 留空
+    6. 景點必須在 ${data.destination} 附近
+    7. 符合預算 ${data.budget}
+    
+    使用者資訊：
+    
+    旅遊類型：${data.type}
+    目的地：${data.destination}
+    開始日期：${data.startDate}
+    結束日期：${data.endDate}
+    人數：${data.people}
+    交通方式：${data.transport}
+    住宿類型：${data.hotel}
+    飲食偏好：${data.food}
+    預算：${data.budget}
+    
+    `;
+    
     const res = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer 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"
+        Authorization: "Bearer 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"
       },
       body: JSON.stringify({
         model: "gpt-4o-mini",
@@ -46,4 +84,4 @@ const prompt = `
   
     const json = await res.json();
     return json.choices[0].message.content;
-  }
+}
