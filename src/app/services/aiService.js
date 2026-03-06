@@ -18,7 +18,7 @@ export async function generateItinerary(data) {
     {
      "tripTitle":"旅行名稱",
      "destination":"目的地",
-     "daysCount":"3晚",
+     "daysCount":"4",
      "people":"2人",
      "hotels":[
        "飯店名稱1",

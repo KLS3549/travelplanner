@@ -9,8 +9,8 @@ export default function TravelForm({ onGenerate }) {
         date: "",
         people: 1,
         transport: "",
-        budgetMin: 5000,
-        budgetMax: 30000,
+        budgetMin: 50000,
+        budgetMax: 70000,
     });
 
     const handleChange = (e) => {
@@ -24,7 +24,7 @@ export default function TravelForm({ onGenerate }) {
 
     const STEP = 1000;
     const MIN = 1000;
-    const MAX = 100000;
+    const MAX = 200000;
 
     const travelTypes = [
         { title: "🏔️ 自然探索", desc: "山川湖海、國家公園" },
@@ -64,7 +64,7 @@ export default function TravelForm({ onGenerate }) {
                 (new Date(form.endDate) - new Date(form.startDate)) /
                 (1000 * 60 * 60 * 24)
             )
-            : 0;
+            : -1;
 
   return (
     <div className="flex justify-center mt-10 px-4">
@@ -126,7 +126,7 @@ export default function TravelForm({ onGenerate }) {
             <div className="flex justify-between items-center">
                 <SectionTitle>📅 旅遊日期</SectionTitle>
 
-                {nights > 0 && (
+                {nights >= 0 && (
                 <span className="text-sm text-stone-400 font-semibold">
                     {nights}晚
                 </span>

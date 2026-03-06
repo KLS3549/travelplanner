@@ -4,6 +4,8 @@ import { generateEmergencyHelp } from "../services/generateEmergencyHelp";
 export default function EmergencyHelper({ destination }) {
   const [open, setOpen] = useState(false);
   const [solutions, setSolutions] = useState([]);
+  const [activeTag, setActiveTag] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const situations = [
     "突然下雨",
@@ -26,6 +28,17 @@ export default function EmergencyHelper({ destination }) {
     }
   
   };
+  
+  const handleSituationClick = async (s) => {
+    setActiveTag(s);
+    setLoading(true);
+    setSolutions([]);
+  
+    await handleSituation(s); // 原本你的 AI function
+  
+    setLoading(false);
+  };
+
 
   return (
     <div className="fixed bottom-6 right-6">
@@ -33,7 +46,9 @@ export default function EmergencyHelper({ destination }) {
       {/* 小幫手按鈕 */}
       <button
         onClick={() => setOpen(!open)}
-        className="bg-[#C9BBA7] text-white px-4 py-3 rounded-full shadow-lg hover:bg-[#8A8473] text-md font-medium"
+        className="bg-[#C9BBA7] text-white px-4 py-3 rounded-full shadow-lg
+        hover:bg-[#8A8473] text-md font-medium
+        transition transform hover:-translate-y-1 hover:shadow-xl"
       >
         🆘 突發狀況小幫手
       </button>
@@ -50,13 +65,40 @@ export default function EmergencyHelper({ destination }) {
             {situations.map((s) => (
               <button
                 key={s}
-                onClick={() => handleSituation(s)}
-                className="border text-[#8A8473] px-3 py-1 rounded-full text-sm hover:bg-[#F4F1EA]"
+                onClick={() => handleSituationClick(s)}
+                className={`
+                  border px-3 py-1 rounded-full text-sm transition transform
+                  hover:-translate-y-1 hover:shadow-md
+              
+                  ${activeTag === s
+                    ? "bg-[#C9BBA7] text-white border-[#C9BBA7]"
+                    : "text-[#8A8473] hover:bg-[#F4F1EA] border-2"
+                  }
+                `}
               >
                 {s}
               </button>
             ))}
           </div>
+
+          <button
+            onClick={() => {
+              setSolutions([]);
+              setActiveTag(null);
+            }}
+            className="px-3 py-1 text-sm rounded-full border border-[#C9BBA7]
+            text-[#C9BBA7] bg-white font-bold 
+            transition transform hover:-translate-y-1 hover:shadow-md
+            hover:bg-[#F4F1EA] mt-3 mb-5"
+          >
+            RESET
+          </button>
+
+          {loading && (
+            <div className="text-center text-sm text-stone-500 py-4">
+              🤖 AI 正在生成建議中...
+            </div>
+          )}
 
           {solutions.length > 0 && (
             <div className="space-y-3 max-h-60 overflow-y-auto">

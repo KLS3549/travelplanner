@@ -50,7 +50,7 @@ function App() {
 
       {loading && (
         <p className="text-center mt-6 text-[#8A8473] text-lg font-medium">
-          AI 正在為你規劃行程...
+          🤖 AI 正在為你規劃行程...
         </p>
       )}
 

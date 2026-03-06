@@ -15,6 +15,8 @@ export default function ItineraryResult({ result }) {
     );
   }
 
+  const day = data.daysCount - 1;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -33,7 +35,7 @@ export default function ItineraryResult({ result }) {
             </h2>
 
             <p className="text-[#8A8473] mt-2 text-md font-normal">
-              {data.destination} ｜ {data.daysCount} ｜ {data.people}
+              {data.destination} ｜ {day + "晚"} ｜ {data.people}
             </p>
 
           </div>
@@ -91,7 +93,7 @@ export default function ItineraryResult({ result }) {
                       </div>
 
                       <div className="text-sm text-stone-400 flex gap-4 mt-1">
-                        <span>💰 {spot.cost}</span>
+                        <span>💰 NT$ {spot.cost}</span>
                       </div>
 
                       {spot.transport && (
