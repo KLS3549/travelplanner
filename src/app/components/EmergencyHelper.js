@@ -96,7 +96,7 @@ export default function EmergencyHelper({ destination }) {
 
           {loading && (
             <div className="text-center text-sm text-stone-500 py-4">
-              🤖 AI 正在生成建議中...
+              🤖 AI 正在幫你解決...
             </div>
           )}
 
