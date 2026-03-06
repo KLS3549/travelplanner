@@ -122,6 +122,21 @@ export default function ItineraryResult({ result }) {
 
           </div>
 
+          <div className="flex justify-center mt-10">
+            <button
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: "instant" });
+                window.location.reload();
+              }}
+              className="px-6 py-2 rounded-full border border-[#E8E2D6]
+              text-[#8A8473] bg-white font-semibold text-md
+              transition transform hover:-translate-y-1 hover:shadow-md
+              hover:bg-[#F4F1EA] border-2"
+            >
+              🔄 重新規劃行程
+            </button>
+          </div>
+
         </div>
 
       </div>
