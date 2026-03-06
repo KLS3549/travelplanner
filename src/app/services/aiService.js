@@ -70,15 +70,13 @@ export async function generateItinerary(data) {
     
     `;
     
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+    const res = await fetch("http://localhost:5001/api/ai", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer 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"
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [{ role: "user", content: prompt }]
+        prompt: prompt
       })
     });
   
