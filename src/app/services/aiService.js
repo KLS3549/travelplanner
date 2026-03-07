@@ -70,7 +70,7 @@ export async function generateItinerary(data) {
     
     `;
     
-    const res = await fetch("http://localhost:5001/api/ai", {
+    const res = await fetch("https://travelplanner-1-d5ic.onrender.com/api/ai", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
